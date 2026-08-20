@@ -1,0 +1,19 @@
+{
+  "name": "relay-kit",
+  "owner": {
+    "name": "KAKA",
+    "url": "https://github.com/unomae"
+  },
+  "metadata": {
+    "description": "Session relay rituals for Claude Code: leave clean, hand off, pick up."
+  },
+  "plugins": [
+    {
+      "name": "relay-kit",
+      "source": "./plugins/relay-kit",
+      "description": "Three read-only rituals that keep context alive across machines, tools and sessions: /afk (leave clean), /handoff (extract volatile memory), /yourturn (pick up).",
+      "version": "1.0.0",
+      "category": "workflow"
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "name": "relay-kit",
+  "displayName": "Relay Kit",
+  "version": "1.0.0",
+  "description": "Three read-only rituals that keep context alive across machines, tools and sessions: /afk (leave clean), /handoff (extract volatile memory), /yourturn (pick up).",
+  "author": {
+    "name": "KAKA",
+    "url": "https://github.com/unomae"
+  },
+  "homepage": "https://github.com/unomae/relay-kit",
+  "repository": "https://github.com/unomae/relay-kit",
+  "license": "MIT",
+  "keywords": [
+    "handoff",
+    "context",
+    "cross-device",
+    "workflow",
+    "session",
+    "git"
+  ],
+  "userConfig": {
+    "config_path": {
+      "type": "string",
+      "title": "Relay config path",
+      "description": "Path to your per-repo relay config, relative to the repo root. Copy templates/relay.config.md there to enable project-aware handoffs.",
+      "default": ".claude/relay.config.md"
+    },
+    "repo_root": {
+      "type": "directory",
+      "title": "Fallback repo root",
+      "description": "Used only when a session starts outside a git repo. Leave empty to make the rituals ask instead of guessing.",
+      "required": false
+    },
+    "vault_root": {
+      "type": "directory",
+      "title": "Notes vault root",
+      "description": "Optional. Where your daily journals live if they are NOT inside the repo (Obsidian vault, OneDrive folder, etc). Leave empty to keep journals in the repo.",
+      "required": false
+    },
+    "journal_dir": {
+      "type": "string",
+      "title": "Journal directory",
+      "description": "Journal folder, relative to the vault root (or to the repo root if no vault is set). Files are written as <journal_dir>/YYYY-MM/YYYY-MM-DD.md.",
+      "default": "journal"
+    }
+  }
+}
