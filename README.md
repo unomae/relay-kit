@@ -76,6 +76,14 @@ flowchart LR
 
 ---
 
+## What it actually prints
+
+A real `/afk` run in a demo repo that has one unpushed commit and a stray file:
+
+![Terminal output of /afk: an unpushed commit flagged first, an untracked note file, services checked, and drift found between api/retry.py and the README someone reads first](docs/media/afk.svg)
+
+---
+
 ## Quick start
 
 Requires Claude Code.

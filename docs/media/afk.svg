@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="732" viewBox="0 0 920 732" font-family='ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace' font-size="13" role="img" aria-label="/relay-kit:afk">
+<rect x="0.5" y="0.5" width="919" height="731" rx="10" fill="#0d1117" stroke="#30363d"/>
+<rect x="0.5" y="0.5" width="919" height="35" rx="10" fill="#161b22"/>
+<rect x="0.5" y="25" width="919" height="11" fill="#161b22"/>
+<line x1="0.5" y1="36" x2="919.5" y2="36" stroke="#30363d"/>
+<circle cx="20" cy="18" r="5" fill="#ff5f56"/><circle cx="38" cy="18" r="5" fill="#ffbd2e"/><circle cx="56" cy="18" r="5" fill="#27c93f"/>
+<text x="460" y="22" text-anchor="middle" fill="#8b949e" font-size="12">/relay-kit:afk</text>
+<text x="22" y="52" xml:space="preserve" fill="#7ee787" font-weight="400">$ claude -p "/relay-kit:afk"</text>
+<text x="22" y="72" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="92" xml:space="preserve" fill="#58a6ff" font-weight="600">AFK sweep</text>
+<text x="22" y="112" xml:space="preserve" fill="#8b949e" font-weight="400">Host: desktop-7f2k (MINGW64) | Repo: ~/demo/testbed (main checkout, not a worktree)</text>
+<text x="22" y="132" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="152" xml:space="preserve" fill="#58a6ff" font-weight="600">Loose ends</text>
+<text x="22" y="172" xml:space="preserve" fill="#f0883e" font-weight="400">• Committed but not pushed: 1 commit — 4bbc66d feat(api): rewrite retry logic.</text>
+<text x="22" y="192" xml:space="preserve" fill="#f0883e" font-weight="400">  Until it is pushed the other machine cannot see this work. → git push</text>
+<text x="22" y="212" xml:space="preserve" fill="#c9d1d9" font-weight="400">• Untracked: web/scratch.txt (12 bytes, "draft notes") — a note file, so it is the kind of</text>
+<text x="22" y="232" xml:space="preserve" fill="#c9d1d9" font-weight="400">  thing the next session would look for. Track it or delete it, but do not leave it only</text>
+<text x="22" y="252" xml:space="preserve" fill="#c9d1d9" font-weight="400">  on this disk.</text>
+<text x="22" y="272" xml:space="preserve" fill="#8b949e" font-weight="400">• Upstream is set (main...origin/main), so a plain git push is enough.</text>
+<text x="22" y="292" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="312" xml:space="preserve" fill="#58a6ff" font-weight="600">Services still up</text>
+<text x="22" y="332" xml:space="preserve" fill="#3fb950" font-weight="400">• Nothing listening on :5173 (web) or :8000 (api). netstat responded — 37 listeners total,</text>
+<text x="22" y="352" xml:space="preserve" fill="#3fb950" font-weight="400">  none of them yours.</text>
+<text x="22" y="372" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="392" xml:space="preserve" fill="#58a6ff" font-weight="600">Drift on projects you touched</text>
+<text x="22" y="412" xml:space="preserve" fill="#c9d1d9" font-weight="400">• api — first read: api/README.md | drift: <tspan font-weight="600" fill="#e6edf3">possible</tspan></text>
+<text x="22" y="432" xml:space="preserve" fill="#8b949e" font-weight="400">    evidence: api/retry.py last committed at 1787296744, api/README.md at 1787296737.</text>
+<text x="22" y="452" xml:space="preserve" fill="#8b949e" font-weight="400">    The retry logic was rewritten this session; the doc someone reads first was not touched.</text>
+<text x="22" y="472" xml:space="preserve" fill="#3fb950" font-weight="400">• web — first read: web/PLAN.md | drift: none</text>
+<text x="22" y="492" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="512" xml:space="preserve" fill="#58a6ff" font-weight="600">Verdict</text>
+<text x="22" y="532" xml:space="preserve" fill="#c9d1d9" font-weight="400">• <tspan font-weight="600" fill="#e6edf3">2 things to deal with first:</tspan> the unpushed commit, and web/scratch.txt.</text>
+<text x="22" y="552" xml:space="preserve" fill="#c9d1d9" font-weight="400">  The API README drift is a judgment call.</text>
+<text x="22" y="572" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="592" xml:space="preserve" fill="#58a6ff" font-weight="600">Next</text>
+<text x="22" y="612" xml:space="preserve" fill="#c9d1d9" font-weight="400">• On the other machine, run /yourturn</text>
+<text x="22" y="632" xml:space="preserve" fill="#c9d1d9" font-weight="400">• Handing off to another tool or a fresh session? Run /handoff first</text>
+<text x="22" y="652" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="672" xml:space="preserve" fill="#8b949e" font-weight="400">Want me to push the commit, or update api/README.md to match the new retry logic?</text>
+<text x="22" y="692" xml:space="preserve" fill="#8b949e" font-weight="400">I have not touched either — say the word.</text>
+</svg>
