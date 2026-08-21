@@ -1,0 +1,74 @@
+name: Propose an adapter
+description: An optional check for a failure mode your setup has and most setups do not
+labels: ["adapter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Adapters are the most useful thing to contribute. Read
+        [CONTRIBUTING.md](https://github.com/unomae/relay-kit/blob/main/CONTRIBUTING.md) first —
+        it has the file shape and the three places a new adapter has to be registered.
+
+        You do not need working code to open this. A well-described failure is the hard part.
+
+  - type: textarea
+    id: failure
+    attributes:
+      label: The failure it came from
+      description: >-
+        Concrete, past tense, one paragraph. Every check in this kit exists because something
+        actually broke. If you cannot name a failure that really happened, the adapter is probably
+        not worth shipping.
+      placeholder: >-
+        A Windows checkout wrote tracked symlinks as plain text files. Nothing warned, and the
+        next commit broke them for everyone else.
+    validations:
+      required: true
+
+  - type: textarea
+    id: detect
+    attributes:
+      label: How it would detect the problem
+      description: Commands if you have them, prose if you do not. Assume nothing about the platform.
+      render: bash
+
+  - type: textarea
+    id: why-adapter
+    attributes:
+      label: Why an adapter, and not part of a ritual
+      description: >-
+        The test from CONTRIBUTING: if most users would see this check do something useful, it
+        belongs in the ritual itself. So — who would never need this?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: used-by
+    attributes:
+      label: Which rituals would run it
+      multiple: true
+      options:
+        - /afk
+        - /yourturn
+        - /project-sync
+    validations:
+      required: true
+
+  - type: input
+    id: machine-config
+    attributes:
+      label: Machine-level config it would need
+      description: A path outside the repo, a mirror location, a token. Per-machine values go in plugin userConfig, not the repo config.
+      placeholder: none
+
+  - type: checkboxes
+    id: invariants
+    attributes:
+      label: It obeys the same rules as the rituals
+      options:
+        - label: Read-only — never commits, pushes, stashes, resets or deletes, not even inside a nested repo
+          required: true
+        - label: Silent when clean — prints nothing at all when it finds nothing
+          required: true
+        - label: Unverified, never clean — if it cannot run, it says so rather than reporting all clear
+          required: true

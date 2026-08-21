@@ -1,0 +1,118 @@
+name: A ritual did the wrong thing
+description: /afk, /handoff, /yourturn, /project-sync or /journal misbehaved
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Before filing.** Plugin skills load *when a session starts*. If you installed or updated
+        the plugin and then invoked a ritual in that same session, it will look broken in a way
+        that is indistinguishable from a real bug. Open a fresh session and try once more.
+
+        **Redact before pasting.** Ritual output carries hostnames, absolute paths, repo and
+        branch names. Strip anything you would not put in a public repo — the same rule
+        `/handoff` follows on your behalf.
+
+  - type: checkboxes
+    id: fresh-session
+    attributes:
+      label: Fresh session
+      options:
+        - label: I opened a new session after installing or updating, and it still misbehaves
+          required: true
+
+  - type: dropdown
+    id: ritual
+    attributes:
+      label: Which ritual
+      options:
+        - /afk
+        - /handoff
+        - /yourturn
+        - /project-sync
+        - /journal
+        - Install, or plugin configuration
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of wrong
+      description: >-
+        The third option is the most serious class of bug in this kit. A check that fails must
+        never look like a check that passed — see docs/DESIGN.md.
+      options:
+        - It reported something that was not true
+        - It errored out, or stopped the sweep early
+        - It reported clean, but something really was loose
+        - It acted on its own instead of only reporting
+        - Output was correct but unusable (too long, wrong language, mangled formatting)
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and what happened instead
+      placeholder: |
+        Expected: /afk to flag the 2 commits I had not pushed.
+        Got: "Clean, safe to walk away."
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: The output, redacted
+      render: text
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - macOS
+        - Windows — Git Bash
+        - Windows — PowerShell
+        - Linux
+        - WSL
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: cc-version
+    attributes:
+      label: Claude Code version
+      description: Output of `claude --version`
+    validations:
+      required: true
+
+  - type: input
+    id: kit-version
+    attributes:
+      label: Relay Kit version
+      description: Shown in `/plugin`, or the `version` field in plugins/relay-kit/.claude-plugin/plugin.json
+      placeholder: 1.1.1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: config
+    attributes:
+      label: Do you have a .claude/relay.config.md?
+      options:
+        - "Yes"
+        - "No — running with git checks only"
+        - Yes, but the ritual behaved as though it were missing
+    validations:
+      required: true
+
+  - type: input
+    id: adapters
+    attributes:
+      label: Adapters enabled
+      description: From the Adapters table in your config
+      placeholder: none

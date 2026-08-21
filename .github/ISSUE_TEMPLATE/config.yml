@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How to write an adapter
+    url: https://github.com/unomae/relay-kit/blob/main/CONTRIBUTING.md
+    about: The file shape, the three places to register it, and the rules it has to obey.
+  - name: Why the rituals refuse to fix anything for you
+    url: https://github.com/unomae/relay-kit/blob/main/docs/DESIGN.md
+    about: The invariants. A change that breaks one will be rejected however well it works.
