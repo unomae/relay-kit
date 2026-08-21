@@ -3,3 +3,4 @@ node_modules/
 Thumbs.db
 .claude/settings.local.json
 .relay/handoffs/
+PLAN.md
