@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.1
+
+Spells out what `/handoff` does when there is no conversation to squeeze.
+
+- `/handoff` invoked as the first message of a session now has a defined behaviour: label the note
+  as reconstructed, rebuild from the durable layer, and keep pointer-vs-payload. Previously the
+  spec only covered "list is genuinely empty", leaving the common cold-start case to interpretation
+
 ## 1.1.0
 
 `/handoff`'s output location is now configurable, and no longer defaults into a protected directory.

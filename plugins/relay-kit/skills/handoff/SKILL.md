@@ -1,6 +1,6 @@
 ---
 name: handoff
-version: 1.1.0
+version: 1.1.1
 description: |
   Write a handoff note that another session, another model or another person can pick up cold.
   Triggers on "handoff", "hand this off", "write a handoff note", "I'm switching to <other tool>",
@@ -90,6 +90,14 @@ one line per item:
 - **Dead ends** — what you tried and why it failed.
 
 If a list is genuinely empty, write "none this session". Do not pad.
+
+**If there was no conversation to squeeze** — `/handoff` was the first message of the session, or
+the session never got past setup — do not quietly return three empty lists, and do not write as
+though you witnessed a session you did not. Say so in one line at the top of the note, then
+reconstruct what you can from the durable layer: recent journal entries, the first-read doc,
+recent commits. Pointer-vs-payload still holds — a reconstructed item cites the file it came from
+instead of copying it in. The next reader has to be able to tell which parts were witnessed and
+which were inferred; that distinction is worth more than a fuller-looking note.
 
 ### Step 3 — Redact
 
