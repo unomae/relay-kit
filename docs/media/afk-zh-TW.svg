@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="632" viewBox="0 0 920 632" font-family='ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", \"Noto Sans Mono CJK TC\", \"Microsoft JhengHei\", \"PingFang TC\", monospace' font-size="13" role="img" aria-label="/relay-kit:afk（繁體中文）">
+<rect x="0.5" y="0.5" width="919" height="631" rx="10" fill="#0d1117" stroke="#30363d"/>
+<rect x="0.5" y="0.5" width="919" height="35" rx="10" fill="#161b22"/>
+<rect x="0.5" y="25" width="919" height="11" fill="#161b22"/>
+<line x1="0.5" y1="36" x2="919.5" y2="36" stroke="#30363d"/>
+<circle cx="20" cy="18" r="5" fill="#ff5f56"/><circle cx="38" cy="18" r="5" fill="#ffbd2e"/><circle cx="56" cy="18" r="5" fill="#27c93f"/>
+<text x="460" y="22" text-anchor="middle" fill="#8b949e" font-size="12">/relay-kit:afk（繁體中文）</text>
+<text x="22" y="52" xml:space="preserve" fill="#7ee787" font-weight="400">$ claude -p "用繁體中文回答。/relay-kit:afk"</text>
+<text x="22" y="72" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="92" xml:space="preserve" fill="#58a6ff" font-weight="600">AFK 巡檢</text>
+<text x="22" y="112" xml:space="preserve" fill="#8b949e" font-weight="400">主機：desktop-7f2k（MINGW64 / Windows）｜Repo：~/demo/testbed（主 checkout，非 worktree）</text>
+<text x="22" y="132" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="152" xml:space="preserve" fill="#58a6ff" font-weight="600">未收尾的東西</text>
+<text x="22" y="172" xml:space="preserve" fill="#f0883e" font-weight="400">• 已 commit 但沒 push：1 個 — 4bbc66d feat(api): rewrite retry logic</text>
+<text x="22" y="192" xml:space="preserve" fill="#f0883e" font-weight="400">  → 這是交接最常斷的地方：另一台機器 pull 不到這份工作。</text>
+<text x="22" y="212" xml:space="preserve" fill="#c9d1d9" font-weight="400">• 未追蹤：web/scratch.txt（內容 draft notes）— 看起來是暫存草稿，不是該進版控的檔案，</text>
+<text x="22" y="232" xml:space="preserve" fill="#c9d1d9" font-weight="400">  不催你處理。</text>
+<text x="22" y="252" xml:space="preserve" fill="#8b949e" font-weight="400">• .claude/settings.json 沒被 git 追蹤（機器本地設定在 settings.local.json）→ 無跨機衝突風險。</text>
+<text x="22" y="272" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="292" xml:space="preserve" fill="#58a6ff" font-weight="600">還在跑的服務</text>
+<text x="22" y="312" xml:space="preserve" fill="#3fb950" font-weight="400">• 5173 / 8000 都沒有在監聽 — 沒有東西擋著另一台機器啟動。</text>
+<text x="22" y="332" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="352" xml:space="preserve" fill="#58a6ff" font-weight="600">你這次動過的專案，文件漂移</text>
+<text x="22" y="372" xml:space="preserve" fill="#c9d1d9" font-weight="400">• api — first read：api/README.md｜漂移：<tspan font-weight="600" fill="#e6edf3">可能有</tspan></text>
+<text x="22" y="392" xml:space="preserve" fill="#8b949e" font-weight="400">    證據：api/ 最後一次 commit（retry 邏輯重寫）晚於 api/README.md（初始 commit）。</text>
+<text x="22" y="412" xml:space="preserve" fill="#8b949e" font-weight="400">    README 只有一句 "Start here."，沒提到 retry 改了什麼。</text>
+<text x="22" y="432" xml:space="preserve" fill="#3fb950" font-weight="400">• web — first read：web/PLAN.md｜漂移：無</text>
+<text x="22" y="452" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="472" xml:space="preserve" fill="#58a6ff" font-weight="600">結論</text>
+<text x="22" y="492" xml:space="preserve" fill="#c9d1d9" font-weight="400">• <tspan font-weight="600" fill="#e6edf3">有 1 件真的該處理</tspan>：那個沒 push 的 commit。其餘可以走人。</text>
+<text x="22" y="512" xml:space="preserve" fill="#c9d1d9" font-weight="400"></text>
+<text x="22" y="532" xml:space="preserve" fill="#58a6ff" font-weight="600">接下來</text>
+<text x="22" y="552" xml:space="preserve" fill="#8b949e" font-weight="400">要我做的話（都等你點頭，我不會自己動）：</text>
+<text x="22" y="572" xml:space="preserve" fill="#8b949e" font-weight="400">  1. git push 把 4bbc66d 推上去   2. 補 retry 行為到 api/README.md   3. scratch.txt 進 .gitignore</text>
+<text x="22" y="592" xml:space="preserve" fill="#c9d1d9" font-weight="400">• 到另一台機器後跑 /yourturn；要交給別的工具或開新 session，先跑 /handoff。</text>
+</svg>

@@ -75,6 +75,14 @@ flowchart LR
 
 ---
 
+## 實際印出來長這樣
+
+在一個「有一個未 push 的 commit、外加一個沒收的暫存檔」的 demo repo 實跑 `/afk`：
+
+![/afk 的終端機輸出：未 push 的 commit 排第一個、未追蹤的草稿檔、服務檢查，以及 api/retry.py 跟第一份該讀的文件之間的漂移](docs/media/afk-zh-TW.svg)
+
+---
+
 ## 快速開始
 
 需要 Claude Code。
