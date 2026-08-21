@@ -122,7 +122,8 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 
 **Adapters**——選配檢查，預設全關，見下面。
 
-機器層級的值（放在 repo 外的筆記庫、fallback 的 repo 路徑）在安裝時設一次
+機器層級的值（放在 repo 外的筆記庫、fallback 的 repo 路徑、`/handoff` 交棒帖寫到哪）
+在安裝時設一次
 （`/plugin` → Relay Kit → configure），不寫進 repo 那份——那是每台機器各自的東西，不該塞進
 團隊共用的檔案。
 

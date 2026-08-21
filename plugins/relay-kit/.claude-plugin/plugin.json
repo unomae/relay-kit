@@ -1,7 +1,7 @@
 {
   "name": "relay-kit",
   "displayName": "Relay Kit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Three read-only rituals that keep context alive across machines, tools and sessions: /afk (leave clean), /handoff (extract volatile memory), /yourturn (pick up).",
   "author": {
     "name": "KAKA",
@@ -42,6 +42,12 @@
       "title": "Journal directory",
       "description": "Journal folder, relative to the vault root (or to the repo root if no vault is set). Files are written as <journal_dir>/YYYY-MM/YYYY-MM-DD.md.",
       "default": "journal"
+    },
+    "handoff_dir": {
+      "type": "string",
+      "title": "Handoff notes directory",
+      "description": "Where /handoff writes its notes, relative to the repo root. Keep it outside .claude/ — Claude Code treats that directory as protected, so writes there prompt for permission every time and fail outright in a non-interactive run. Notes are disposable working files; add this directory to .gitignore.",
+      "default": ".relay/handoffs"
     }
   }
 }

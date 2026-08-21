@@ -12,7 +12,7 @@
       "name": "relay-kit",
       "source": "./plugins/relay-kit",
       "description": "Three read-only rituals that keep context alive across machines, tools and sessions: /afk (leave clean), /handoff (extract volatile memory), /yourturn (pick up).",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "category": "workflow"
     }
   ]

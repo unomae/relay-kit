@@ -125,7 +125,8 @@ cannot be checked by anyone — including the next agent, which will happily bel
 
 **Adapters** — optional checks, off by default. See below.
 
-Machine-level values (a notes vault outside the repo, a fallback repo root) are set once at
+Machine-level values (a notes vault outside the repo, a fallback repo root, where `/handoff`
+writes its notes) are set once at
 install time via `/plugin` → Relay Kit → configure, not in the repo file — they are per-machine,
 and they do not belong in something your team shares.
 

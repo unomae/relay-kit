@@ -1,6 +1,6 @@
 ---
 name: handoff
-version: 1.0.0
+version: 1.1.0
 description: |
   Write a handoff note that another session, another model or another person can pick up cold.
   Triggers on "handoff", "hand this off", "write a handoff note", "I'm switching to <other tool>",
@@ -100,9 +100,15 @@ where the real value lives.
 ### Step 4 — Write the note
 
 ```bash
-mkdir -p "$REPO_ROOT/.claude/handoffs"
-OUT="$REPO_ROOT/.claude/handoffs/$(date +%Y-%m-%d)_<project>_handoff.md"
+HANDOFF_DIR="$REPO_ROOT/${user_config.handoff_dir}"
+mkdir -p "$HANDOFF_DIR"
+OUT="$HANDOFF_DIR/$(date +%Y-%m-%d)_<project>_handoff.md"
 ```
+
+**Do not move this back under `.claude/`.** Claude Code treats that directory as protected: a
+write there prompts for permission on every run, and fails outright in a non-interactive session.
+The default (`.relay/handoffs`) sits outside it deliberately. Notes are disposable working files —
+if the directory is not in `.gitignore`, say so once and offer to add it.
 
 Use the template below. **The first line must be the self-starting sentence** ("You are picking
 up …") so that pasting the file is enough to start — the reader should not need to know any
@@ -153,7 +159,7 @@ Keep it under 20 lines.
 ```markdown
 **Handoff note written**
 - Project: <project>
-- File: `.claude/handoffs/<YYYY-MM-DD>_<project>_handoff.md`
+- File: `<handoff_dir>/<YYYY-MM-DD>_<project>_handoff.md`
 - Volatile layer: <N> decisions, <M> unresolved, <K> dead ends
 - <unpushed warning, if any>
 
@@ -161,7 +167,7 @@ Keep it under 20 lines.
 
 A. Pointer version (the other tool can read this repo):
 
-   Read .claude/handoffs/<file> and pick up from there.
+   Read <handoff_dir>/<file> and pick up from there.
 
 B. Self-contained version (paste anywhere, no repo access needed):
 

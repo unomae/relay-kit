@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.1.0
+
+`/handoff`'s output location is now configurable, and no longer defaults into a protected directory.
+
+- New `handoff_dir` user config option, default `.relay/handoffs`
+- **Fix:** `/handoff` wrote to `.claude/handoffs/`, which Claude Code treats as protected — the
+  write prompted for permission on every run and failed outright in non-interactive sessions
+
 ## 1.0.0
 
 First public release. Three relay rituals (`/afk`, `/handoff`, `/yourturn`) plus two supporting
