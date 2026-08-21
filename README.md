@@ -88,7 +88,7 @@ A real `/afk` run in a demo repo that has one unpushed commit and a stray file:
 
 Requires Claude Code.
 
-```bash
+```
 /plugin marketplace add unomae/relay-kit
 /plugin install relay-kit@relay-kit
 ```

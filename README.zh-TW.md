@@ -94,7 +94,7 @@ flowchart LR
 
 需要 Claude Code。
 
-```bash
+```
 /plugin marketplace add unomae/relay-kit
 /plugin install relay-kit@relay-kit
 ```
