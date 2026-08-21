@@ -210,6 +210,13 @@ Each is documented in [`plugins/relay-kit/adapters/`](plugins/relay-kit/adapters
 
 ---
 
+## Contributing
+
+The most useful contribution is a new adapter: an optional check for a failure mode your setup
+has and most setups do not. See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
 ## Credits
 
 Extracted from a working two-machine, multi-tool setup and generalized. The `/journal` question

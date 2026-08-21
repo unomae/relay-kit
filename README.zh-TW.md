@@ -201,6 +201,13 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 
 ---
 
+## 想貢獻
+
+最有價值的貢獻是新的 adapter：一個只有你這種環境才會觸發、多數人用不到的檢查。
+做法見 [CONTRIBUTING.md](CONTRIBUTING.md)。
+
+---
+
 ## 出處
 
 從一套實際在用的雙機、多工具環境抽出來通用化。`/journal` 的問題設計改編自 Raymond Hou 的
