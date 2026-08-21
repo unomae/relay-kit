@@ -7,7 +7,7 @@
 [繁體中文](README.zh-TW.md)
 
 Your agent session ends. The work does not. Relay Kit is the handover protocol for the gap in
-between — leaving a machine clean, writing down what only exists in the conversation, and picking
+between: leaving a machine clean, writing down what only exists in the conversation, and picking
 it all back up somewhere else.
 
 ---
@@ -48,7 +48,7 @@ flowchart TB
 | Ritual | When | What it does |
 | :-- | :-- | :-- |
 | **`/afk`** | Before you walk away | Read-only sweep: unpushed commits, uncommitted work, services still up, plan docs that have drifted from the code. Reports; never acts on its own. |
-| **`/handoff`** | Switching tool, model, or starting a fresh session | Squeezes the volatile layer out of the conversation into one self-starting note — plus pointers to the durable layer, redacted, ready to paste anywhere. |
+| **`/handoff`** | Switching tool, model, or starting a fresh session | Squeezes the volatile layer out of the conversation into one self-starting note, with pointers to the durable layer. Redacted, and ready to paste anywhere. |
 | **`/yourturn`** | When you sit back down | Syncs, then tells you what actually changed, where each project stands, what has gone stale, and what needs starting on *this* machine. |
 
 Two supporting skills come along: **`/project-sync`** (safe sync + structure scan) and
@@ -78,6 +78,8 @@ flowchart LR
 
 ## Quick start
 
+Requires Claude Code.
+
 ```bash
 /plugin marketplace add unomae/relay-kit
 /plugin install relay-kit@relay-kit
@@ -93,22 +95,23 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 Or just create `.claude/relay.config.md` by hand from
 [`templates/relay.config.md`](templates/relay.config.md).
 
-That is the whole setup. Try it:
+That is the whole setup. Plugin skills load at session start, so open a fresh session
+first. Then try it:
 
 ```
 /relay-kit:afk
 ```
 
-The rituals work with no config at all — you get the git checks and nothing project-specific.
-The config is what makes them able to say *"the api's plan doc hasn't moved since you rewrote
-its retry logic"*.
+The rituals work with no config at all. You get the git checks and nothing project-specific.
+With the config, they can say *"the api's plan doc hasn't moved since you rewrote its retry
+logic"*.
 
 ---
 
 ## Configuration
 
 One file per repo, `.claude/relay.config.md`, with three tables. It is Markdown because
-**agents read it the way you do** — there is no parser, so a malformed row degrades into
+**agents read it the way you do**: there is no parser, so a malformed row degrades into
 "not configured" instead of an error.
 
 **Projects** — where does someone new start reading, and what proves the project still works?
@@ -126,15 +129,14 @@ cannot be checked by anyone — including the next agent, which will happily bel
 **Adapters** — optional checks, off by default. See below.
 
 Machine-level values (a notes vault outside the repo, a fallback repo root, where `/handoff`
-writes its notes) are set once at
-install time via `/plugin` → Relay Kit → configure, not in the repo file — they are per-machine,
-and they do not belong in something your team shares.
+writes its notes) are set once at install time, via `/plugin` → Relay Kit → configure. They stay
+out of the repo file: they are per-machine, and they do not belong in something your team shares.
 
 ---
 
 ## What it will never do
 
-This is the part that makes the rituals safe to run without reading the output first:
+This is why you can run the rituals without reading the output first:
 
 - Never `commit`, `push`, `stash`, `reset`, or discard a working-tree change
 - Never resolve a conflict for you
@@ -142,8 +144,8 @@ This is the part that makes the rituals safe to run without reading the output f
 - Never overwrite uncommitted work
 
 `/afk` and `/yourturn` **report**; you decide. Where a fix is obvious they offer it and wait for a
-yes. The only write in the entire kit is `/handoff` creating its note — and `/journal` writing the
-entry you just dictated.
+yes. The kit writes in exactly two places: `/handoff` creating its note, and `/journal` writing
+the entry you just dictated.
 
 If a check cannot run — a platform missing a command, a repo that will not answer — it is marked
 **unverified** and the rest of the sweep continues. A check that fails must never be able to
@@ -153,7 +155,7 @@ report as a check that passed.
 
 ## Why each check exists
 
-Every one of these is a real failure that happened, not a hypothetical:
+Every one of these came from a real failure:
 
 | The check | The failure it came from |
 | :-- | :-- |
@@ -165,7 +167,7 @@ Every one of these is a real failure that happened, not a hypothetical:
 | Queue-jam detection, ranked above open PRs | A finished item left in the queue made a fail-closed runner skip *every* subsequent night, silently. |
 | "The query failed" reported loudly, never as "nothing found" | `timeout` does not exist on macOS by default. Command-not-found got swallowed by a redirect, an empty result printed as "all clear", and the check had been dead for days. |
 
-That last row is the whole design philosophy in one line: **the dangerous output is not an error,
+That last row is the rule the whole kit is built on: **the dangerous output is not an error,
 it is a clean report from a check that never ran.**
 
 ---
@@ -210,7 +212,7 @@ Each is documented in [`plugins/relay-kit/adapters/`](plugins/relay-kit/adapters
 
 ## Credits
 
-Extracted from a working two-machine, multi-tool setup and generalised. The `/journal` question
+Extracted from a working two-machine, multi-tool setup and generalized. The `/journal` question
 set is adapted from a daily-journal skill by Raymond Hou.
 
 MIT licensed — see [LICENSE](LICENSE).

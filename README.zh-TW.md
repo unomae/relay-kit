@@ -77,6 +77,8 @@ flowchart LR
 
 ## 快速開始
 
+需要 Claude Code。
+
 ```bash
 /plugin marketplace add unomae/relay-kit
 /plugin install relay-kit@relay-kit
@@ -92,21 +94,22 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 或直接照 [`templates/relay.config.md`](templates/relay.config.md) 手動建一份
 `.claude/relay.config.md`。
 
-設定就這樣而已。試跑：
+設定就這樣而已。plugin 的 skill 是 session 啟動時載入的，所以要開一個新 session 才叫得動。
+試跑：
 
 ```
 /relay-kit:afk
 ```
 
-**完全不設定也能跑**，只是你只會拿到 git 層的檢查，沒有專案層的判斷。設定檔的價值在於讓儀式
+**完全不設定也能跑**，只是拿到的只有 git 層的檢查，沒有專案層的判斷。設定檔的價值在於讓儀式
 講得出這種話：*「你重寫了 api 的 retry 邏輯，但它的計劃書從那之後沒動過。」*
 
 ---
 
 ## 設定檔
 
-一個 repo 一份 `.claude/relay.config.md`，三張表。刻意用 Markdown，因為**agent 讀它的方式跟你
-一樣**——沒有 parser，所以格式寫壞只會退化成「未設定」，不會噴錯。
+一個 repo 一份 `.claude/relay.config.md`，三張表。刻意用 Markdown，因為 **agent 讀它的方式跟你
+一樣**：沒有 parser，所以格式寫壞只會退化成「未設定」，不會噴錯。
 
 **Projects**——新來的人從哪份文件開始讀？什麼指令能證明這專案還活著？
 
@@ -114,18 +117,17 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 | :-- | :-- | :-- | :-- | :-- |
 | `api` | `api/README.md` | `pytest -q` | exit 0、`0 failed`、無 skip | migration 會打到共用 staging |
 
-`Success evidence` 這欄最多人跳過，然後最後悔。少了它，*「我跑過測試了」*這句話誰都驗不了——
-包括下一個 agent，而它會很樂意相信自己。
+`Success evidence` 這欄最多人跳過，然後最後悔。少了它，*「我跑過測試了」*這句話誰都驗不了，連下一個 agent
+都不行，而它會很樂意相信自己。
 
 **Services**——port 跟啟動指令。`/afk` 用它提醒你服務還開著，`/yourturn` 用它告訴下一台機器
 要啟什麼。
 
 **Adapters**——選配檢查，預設全關，見下面。
 
-機器層級的值（放在 repo 外的筆記庫、fallback 的 repo 路徑、`/handoff` 交棒帖寫到哪）
-在安裝時設一次
-（`/plugin` → Relay Kit → configure），不寫進 repo 那份——那是每台機器各自的東西，不該塞進
-團隊共用的檔案。
+機器層級的值（放在 repo 外的筆記庫、fallback 的 repo 路徑、`/handoff` 交棒帖寫到哪）在安裝時
+設一次：`/plugin` → Relay Kit → configure。這些不寫進 repo 那份，因為那是每台機器各自的東西，
+不該塞進團隊共用的檔案。
 
 ---
 
@@ -138,8 +140,8 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 - 絕不關掉執行中的服務，也不刪任何東西
 - 絕不覆蓋你還沒 commit 的工作
 
-`/afk` 跟 `/yourturn` **只回報**，你決定。遇到明顯該修的它會問一句，等你點頭才動。整個 kit 唯一
-的寫入是 `/handoff` 產出那份帖，以及 `/journal` 寫下你剛口述的日記。
+`/afk` 跟 `/yourturn` **只回報**，你決定。遇到明顯該修的它會問一句，等你點頭才動。整個 kit 只有
+兩處會寫入：`/handoff` 產出那份帖，還有 `/journal` 寫下你剛口述的日記。
 
 檢查跑不動的時候——平台少了某個指令、某個 repo 不回應——一律標成**未確認**，其他檢查照跑。
 **壞掉的檢查絕不能長得像通過的檢查。**
@@ -148,7 +150,7 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 
 ## 每個檢查為什麼存在
 
-下面每一條都是真的踩過，不是假想：
+下面每一條都是真的踩過的：
 
 | 檢查 | 來自哪次事故 |
 | :-- | :-- |
@@ -160,7 +162,7 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 | 佇列卡死優先於待審 PR | 做完的項目留在佇列沒銷帳，fail-closed 的排程器於是**每一晚**都跳過施工，全程無聲。 |
 | 「查詢失敗」要大聲講，絕不能印成「沒有東西」 | macOS 預設沒有 `timeout`，command not found 被重導吃掉，空結果印成「一切正常」，那個檢查其實已經死了好幾天。 |
 
-最後一條就是整個設計哲學：**真正危險的輸出不是錯誤訊息，是一份「根本沒跑過的檢查」交出來的
+最後一條就是整個 kit 的地基：**真正危險的輸出不是錯誤訊息，是一份「根本沒跑過的檢查」交出來的
 乾淨報告。**
 
 ---
@@ -186,7 +188,7 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 
 - **Claude Code**——裝成 plugin，skill 會加上命名空間：`/relay-kit:afk` 等等。
 - **任何其他 agent 工具**——`/handoff` 會另外產一份自帶內容的版本，貼給別的模型、新 session、
-  或同事的聊天室都能直接冷啟，不需要對方存取得到你的 repo。
+  或同事的聊天室都能直接冷啟，對方碰不到你的 repo 也沒關係。
 - **人類同事**——那份帖就是純 Markdown，寫給「完全不知道你這 session 發生什麼事」的讀者看的。
 
 ---
@@ -195,7 +197,7 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 
 - 你只用一台機器、一個工具，而且從不掉 session。那這三個儀式只是多餘的儀式感。
 - 你想要一個「發現問題就自動修好」的工具。這個 kit 刻意停在**告訴你**這一步。
-- 你需要完整的專案管理層。這是交接協定不是追蹤系統——它指向你的計劃書，不取代它。
+- 你需要完整的專案管理層。這是交接協定不是追蹤系統：它指向你的計劃書，不取代它。
 
 ---
 
