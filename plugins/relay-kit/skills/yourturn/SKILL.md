@@ -1,6 +1,6 @@
 ---
 name: yourturn
-version: 1.0.0
+version: 1.2.0
 description: |
   Pick up work on a machine you have been away from: sync, then report what changed, where the
   work stands, and what still needs starting.
@@ -29,13 +29,26 @@ successful pickup when the tree is not actually up to date.
 
 ## Steps
 
-### Step 1 — Target
+### Step 1 — Target and scope
 
 Resolve the target the way `project-sync` does: an explicit path if given, otherwise the current
 working directory if it is a git repo. Never search the workspace by project name, never fall back
 to a default project, never change directory on the user's behalf.
 
 Read the relay config at `${user_config.config_path}` if present; its tables drive Steps 4 and 7.
+
+**Write the scope down before you go any further.** This ritual scans exactly one repo, and every
+check that cannot fire here — an adapter switched off, a missing config, another repo you also work
+in but did not name — produces no output at all. A report that stays silent about them is
+indistinguishable from one that looked and found nothing. Note, before Step 2:
+
+- the absolute path you are about to scan;
+- adapters marked `no` in the config, or the fact that there is no config;
+- any check skipped because the files it needs are not in this repo.
+
+Those belong at the top of the output as a scope line, not buried at the end. Do **not** go hunting
+for the other repos to close the gap — naming what you did not look at is the point, and searching
+the workspace is still forbidden by the target rule above.
 
 ### Step 2 — Sync
 
@@ -158,7 +171,8 @@ section — an empty section is indistinguishable from a skipped step.
 ### Step 8 — Adapters
 
 Run the checks enabled in the config's **Adapters** table, following each one's instructions in
-the plugin's `adapters/<name>.md`. Disabled adapters produce no output.
+the plugin's `adapters/<name>.md`. Disabled adapters produce no output of their own — they
+are named in the scope line instead (Step 1), so "switched off" never reads as "checked, clean".
 
 ## Output
 
@@ -168,6 +182,8 @@ smoothing it over.
 ```markdown
 **YourTurn — picked up**
 - Host: <hostname> | Repo: <path> | Branch: <branch>
+- Scope: this repo only — `<absolute path>`
+- Not checked: <adapters off / no relay config / other repos you work in> ← omit when nothing was skipped
 - Pull: <result> | Working tree: <clean / N modified>
 
 **New since you left**

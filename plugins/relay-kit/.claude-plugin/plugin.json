@@ -1,7 +1,7 @@
 {
   "name": "relay-kit",
   "displayName": "Relay Kit",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Three read-only rituals that keep context alive across machines, tools and sessions: /afk (leave clean), /handoff (extract volatile memory), /yourturn (pick up).",
   "author": {
     "name": "KAKA",

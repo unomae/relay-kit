@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0
+
+`/yourturn` now says what it did **not** look at, so an untouched check stops looking like a clean one.
+
+- New scope line at the top of the report: the absolute path scanned, plus anything skipped —
+  adapters switched off, a missing config, other repos you work in but did not name
+- Step 1 records the scope before the sync runs; Step 8 names disabled adapters rather than
+  silently emitting nothing
+- Found by running `/yourturn` in a second repo: every environment-specific check degraded to
+  no output, and the report read as though the whole machine had been swept
+
 ## 1.1.1
 
 Spells out what `/handoff` does when there is no conversation to squeeze.
