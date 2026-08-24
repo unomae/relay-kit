@@ -49,8 +49,8 @@ Each adapter is documented in the plugin's `adapters/<name>.md`.
 
 | Adapter | Enabled | What it adds |
 | :-- | :-- | :-- |
-| `nested-repos` | yes | Scans repos nested inside this one (vendored/submodule-ish checkouts the outer `git status` ignores). |
-| `symlink-repair` | yes | Detects symlinks flipped into plain files by a Windows checkout, and offers to restore them. |
+| `nested-repos` | no | Scans repos nested inside this one (vendored/submodule-ish checkouts the outer `git status` ignores). |
+| `symlink-repair` | no | Detects symlinks flipped into plain files by a Windows checkout, and offers to restore them. |
 | `hooks-path` | no | Ensures `core.hooksPath` points at a versioned hooks directory so shared pre-commit hooks actually run. |
 | `mirror-skills` | no | Syncs a skills directory into a second agent tool's mirror after pulling. |
 | `queue-check` | no | Reports the state of a scheduled-automation queue file and its open PRs. |

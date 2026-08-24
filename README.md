@@ -88,10 +88,24 @@ A real `/afk` run in a demo repo that has one unpushed commit and a stray file:
 
 Requires Claude Code.
 
+Run these commands inside an interactive Claude Code session:
+
 ```
 /plugin marketplace add unomae/relay-kit
 /plugin install relay-kit@relay-kit
 ```
+
+For a per-repo install from the CLI, run these commands from the repo root:
+
+```bash
+claude plugin marketplace add unomae/relay-kit --scope local
+claude plugin install 'relay-kit@relay-kit' --scope local
+claude plugin list
+```
+
+Confirm that the list shows `relay-kit@relay-kit` with `Scope: local` and
+`Status: enabled`. Adding the marketplace only registers the source; the install
+command is still required.
 
 Then copy the config template into your repo and edit the tables:
 
