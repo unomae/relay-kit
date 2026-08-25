@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.2.1
+
+Fixes a regression from 1.2.0: on the abort path, `/yourturn` reported a config it had never looked for.
+
+- `/yourturn` no longer claims the relay config is missing when it has not checked. "Absent" is now
+  an observation, "unchecked" is a separate state, and neither may be widened into a claim about
+  paths that were not tested
+- The stop-on-failed-sync rule now says what the scope line may carry: only what was actually
+  established before the sync failed
+- Found by running `/yourturn` against a dirty tree with an incoming commit: it aborted correctly,
+  then announced "no relay config found anywhere under `~`" while `.claude/relay.config.md` sat in
+  the repo — `/afk` read that same file in the same session, and `/yourturn` itself read it on the
+  happy path. The 1.2.0 scope line asked the report to note "the fact that there is no config",
+  which presumes the negative is already known
+
 ## 1.2.0
 
 `/yourturn` now says what it did **not** look at, so an untouched check stops looking like a clean one.

@@ -35,7 +35,9 @@ Resolve the target the way `project-sync` does: an explicit path if given, other
 working directory if it is a git repo. Never search the workspace by project name, never fall back
 to a default project, never change directory on the user's behalf.
 
-Read the relay config at `${user_config.config_path}` if present; its tables drive Steps 4 and 7.
+Read the relay config at `${user_config.config_path}` if it exists; its tables drive Steps 4 and 7.
+Test for it — do not infer it from the absence of one. If it does not exist, say so as an
+observation. If you have not looked yet, the config is *unchecked*, which is not the same claim.
 
 **Write the scope down before you go any further.** This ritual scans exactly one repo, and every
 check that cannot fire here — an adapter switched off, a missing config, another repo you also work
@@ -43,7 +45,10 @@ in but did not name — produces no output at all. A report that stays silent ab
 indistinguishable from one that looked and found nothing. Note, before Step 2:
 
 - the absolute path you are about to scan;
-- adapters marked `no` in the config, or the fact that there is no config;
+- adapters marked `no` in the config; or that the config is absent, if you checked and it was;
+  or that the config is unchecked, if you have not looked. Never widen either of those into a
+  claim about paths you did not test — "no config in this repo" is reportable, "no config
+  anywhere" is not;
 - any check skipped because the files it needs are not in this repo.
 
 Those belong at the top of the output as a scope line, not buried at the end. Do **not** go hunting
@@ -64,6 +69,12 @@ Fall back to a plain `git pull` only if `--ff-only` is unavailable.
 **On conflict, divergence or any other error: stop.** Report what failed and which files are
 affected. Do not resolve, reset, stash or check anything out. Do not continue to the later steps —
 a pickup summary built on a failed sync is worse than no summary.
+
+Stopping here means most of this ritual never ran. The scope line still goes out, but it may only
+carry what you actually established before the sync failed — anything you had not reached yet is
+*not checked*, never *not there*. A confident negative invented on the way out of a failure is the
+worst thing this report can contain: it arrives exactly when the reader most needs to know what
+was really looked at.
 
 ### Step 2.1 — What actually came in
 
