@@ -60,11 +60,17 @@ the workspace is still forbidden by the target rule above.
 ```bash
 git branch --show-current
 git status --short --branch
-git pull --ff-only
+RELAY_BEFORE=$(git rev-parse HEAD)          # anchor: before the pull
+git pull --ff-only; pull_rc=$?
+RELAY_AFTER=$(git rev-parse HEAD)           # anchor: after the pull
 git status --short --branch
+printf 'RELAY_BEFORE=%s\nRELAY_AFTER=%s\npull exit=%s\n' "$RELAY_BEFORE" "$RELAY_AFTER" "$pull_rc"
 ```
 
 Fall back to a plain `git pull` only if `--ff-only` is unavailable.
+
+Steps 2.1 and 2.2 use those two anchors, never `ORIG_HEAD`. If the shell does not carry variables
+across calls, substitute the SHAs you actually measured — do not reach for `ORIG_HEAD` instead.
 
 **On conflict, divergence or any other error: stop.** Report what failed and which files are
 affected. Do not resolve, reset, stash or check anything out. Do not continue to the later steps —
@@ -81,11 +87,11 @@ was really looked at.
 `git log -1` hides an entire night of work from the other machine. After pulling:
 
 ```bash
-git log ORIG_HEAD..HEAD --oneline 2>/dev/null    # what this pull brought in
+git log "$RELAY_BEFORE..$RELAY_AFTER" --oneline   # what this pull brought in
 git log --since="2 days ago" --oneline -15       # recent activity either way
 ```
 
-- Commits in `ORIG_HEAD..HEAD` → say "**N new commits pulled**" and list them all.
+- Commits in `$RELAY_BEFORE..$RELAY_AFTER` → say "**N new commits pulled**" and list them all.
 - Five or fewer recent commits → list them. More → list five and say how many remain.
 - Nothing new → one line, and move on.
 - Group by the project prefix in the commit subject when there is one.
@@ -97,7 +103,7 @@ themselves, you are still running the old ones and the output can be quietly wro
 kind of failure, because nothing looks broken.
 
 ```bash
-git diff --name-only ORIG_HEAD..HEAD 2>/dev/null | grep -E '(relay\.config\.md|skills/)' \
+git diff --name-only "$RELAY_BEFORE..$RELAY_AFTER" | grep -E '(relay\.config\.md|skills/)' \
   && echo "relay setup changed in this pull — this run used the previous version"
 ```
 

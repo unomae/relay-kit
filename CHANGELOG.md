@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.2.2
+
+Fixes a false positive in `/yourturn`: after a failed sync it could report commits the pull never brought in.
+
+- Step 2 now records its own anchors — `RELAY_BEFORE` before the pull, `RELAY_AFTER` after it,
+  plus the pull's exit code — and Steps 2.1 and 2.2 range over those instead of `ORIG_HEAD..HEAD`
+- When the pull fails the two anchors are equal, so both sections are empty rather than replaying
+  whatever the *previous* successful pull brought in
+- Dropped the `2>/dev/null` on both commands: a missing anchor now fails loudly instead of
+  quietly turning into an empty range
+- Why `ORIG_HEAD` was wrong: git writes it only once a merge actually starts. A pull that dies in
+  the fetch stage (network) or aborts on the `--ff-only` check (diverged branch) never reaches
+  that write, leaving the value from the last successful pull
+- Reproduced in an isolated lab, old anchor against new on identical state: on a failed pull the
+  old anchor reported 1 commit and a "relay setup changed" warning, on an aborted `--ff-only` it
+  reported 2 — the new anchor reported none in both, while still correctly reporting 1 commit and
+  the warning on a pull that really did bring one in
+
 ## 1.2.1
 
 Fixes a regression from 1.2.0: on the abort path, `/yourturn` reported a config it had never looked for.
