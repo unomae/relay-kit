@@ -1,6 +1,6 @@
 ---
 name: yourturn
-version: 1.2.0
+version: 1.3.0
 description: |
   Pick up work on a machine you have been away from: sync, then report what changed, where the
   work stands, and what still needs starting.
@@ -82,19 +82,50 @@ carry what you actually established before the sync failed — anything you had 
 worst thing this report can contain: it arrives exactly when the reader most needs to know what
 was really looked at.
 
-### Step 2.1 — What actually came in
+### Step 2.1 — What came in since you last picked up here
 
-`git log -1` hides an entire night of work from the other machine. After pulling:
+`git log -1` hides an entire night of work from the other machine. And "what this pull brought in"
+is not enough either: if another session — or a plain `git pull` — already pulled, this pull
+brings in nothing, and the other machine's work shrinks to "0 new commits".
+
+So start from the last time `/yourturn` ran **on this machine**. That anchor lives in a per-machine
+cache, one file per repo, never in git (a shared file would just be overwritten by the other
+machine). Run this in the same shell as Step 2, or substitute the SHAs it printed:
 
 ```bash
-git log "$RELAY_BEFORE..$RELAY_AFTER" --oneline   # what this pull brought in
-git log --since="2 days ago" --oneline -15       # recent activity either way
+ANCHOR_FILE="${XDG_CACHE_HOME:-$HOME/.cache}/relay-kit/last-relay-$(git rev-parse --show-toplevel | LC_ALL=C sed 's|[^A-Za-z0-9._-]|_|g')"
+last=""; when=""
+[ -f "$ANCHOR_FILE" ] && IFS=$'\t' read -r last when < "$ANCHOR_FILE"
+if [ -z "$last" ]; then
+  echo "no previous pickup recorded on this machine -> falling back to this pull"
+elif ! git merge-base --is-ancestor "$last" "$RELAY_AFTER" 2>/dev/null; then
+  echo "previous pickup ${last:0:8} ($when) is no longer in history (rebase/reset?) -> falling back to this pull"
+  last=""
+fi
+if [ -n "$last" ]; then
+  # commits made on this machine enter the reflog one by one; pulled ones only move the branch tip
+  mine=$(git log -g --all --format='%H%x09%gs' 2>/dev/null \
+    | awk -F'\t' '$2 ~ /^(commit|cherry-pick)/ || $2 ~ /Merge made by/ || $2 ~ /\((pick|squash|fixup|reword|edit)\)/ { print $1 }')
+  ext=0; loc=0
+  for h in $(git rev-list "$last..$RELAY_AFTER"); do
+    if printf '%s\n' "$mine" | grep -Fqx "$h"; then loc=$((loc+1))
+    else ext=$((ext+1)); git log -1 --format='%h %s' "$h"; fi
+  done
+  echo "since last pickup here ($when, ${last:0:8}): $ext from elsewhere (listed above), $loc made on this machine"
+else
+  git log "$RELAY_BEFORE..$RELAY_AFTER" --oneline   # fallback: what this pull brought in
+fi
 ```
 
-- Commits in `$RELAY_BEFORE..$RELAY_AFTER` → say "**N new commits pulled**" and list them all.
-- Five or fewer recent commits → list them. More → list five and say how many remain.
-- Nothing new → one line, and move on.
+- Commits **from elsewhere** → list them all, no cap; this is the only place the other machine's
+  work shows up. Head the section "since your last pickup here (<time>)".
+- Commits **made on this machine** → the count only. You were there; `git log` has the details.
+- Fallback → say why (first run here, or the anchor was rewritten away), then "**N new commits
+  pulled**" and list them all. Never present a fallback as "since your last pickup".
+- Nothing from elsewhere → one line, and move on.
 - Group by the project prefix in the commit subject when there is one.
+- Known blind spot: deleting a worktree branch deletes its reflog, so its commits count as "from
+  elsewhere". That errs toward listing too much, never too little.
 
 ### Step 2.2 — Did this pull change the relay setup itself?
 
@@ -108,16 +139,26 @@ git diff --name-only "$RELAY_BEFORE..$RELAY_AFTER" | grep -E '(relay\.config\.md
 ```
 
 If it fires, flag it on its own line at the top of the output and mark the affected sections as
-possibly stale. **Do not silently re-run** — tell the user and let them decide.
+possibly stale. **Do not silently re-run** — tell the user and let them decide. When it fires,
+also skip recording the anchor in Step 3, so a re-run still sees the same commits.
 
-### Step 3 — Platform and host
+### Step 3 — Platform and host, then record the anchor
 
 ```bash
 uname -s
 hostname
+# only after a successful sync, and only if Step 2.2 did not fire
+mkdir -p "$(dirname "$ANCHOR_FILE")" \
+  && printf '%s\t%s\n' "$RELAY_AFTER" "$(date '+%Y-%m-%d %H:%M %z')" > "$ANCHOR_FILE" \
+  && echo "recorded pickup anchor ${RELAY_AFTER:0:8}"
 ```
 
-If the platform cannot be determined, report the hostname and carry on.
+If the platform cannot be determined, report the hostname and carry on. If the anchor cannot be
+written, say so — the next run will fall back to "what this pull brought in". This one-line file is
+the only thing `/yourturn` writes, and it sits outside the repo.
+
+The timestamp uses the machine's own clock and offset on purpose: setting `TZ=` to a zone name
+fails silently on systems without tzdata (Git Bash on Windows, slim containers) and falls back to UTC.
 
 ### Step 4 — Where the work stands
 
@@ -203,8 +244,8 @@ smoothing it over.
 - Not checked: <adapters off / no relay config / other repos you work in> ← omit when nothing was skipped
 - Pull: <result> | Working tree: <clean / N modified>
 
-**New since you left**
-- <commits, grouped by project>
+**New since you left** (since your last pickup here, <time>: N from elsewhere, M made here — or the fallback reason and N pulled)
+- <commits from elsewhere, all of them, grouped by project>
 
 **Project state** (when a project was named)
 - First read: `<path actually read>`

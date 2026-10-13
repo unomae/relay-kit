@@ -166,8 +166,9 @@ This is why you can run the rituals without reading the output first:
 - Never overwrite uncommitted work
 
 `/afk` and `/yourturn` **report**; you decide. Where a fix is obvious they offer it and wait for a
-yes. The kit writes in exactly two places: `/handoff` creating its note, and `/journal` writing
-the entry you just dictated.
+yes. The kit writes in exactly three places: `/handoff` creating its note, `/journal` writing
+the entry you just dictated, and `/yourturn` overwriting a one-line bookmark (the commit it last
+picked up at) in `~/.cache/relay-kit/`, outside your repo.
 
 If a check cannot run — a platform missing a command, a repo that will not answer — it is marked
 **unverified** and the rest of the sweep continues. A check that fails must never be able to

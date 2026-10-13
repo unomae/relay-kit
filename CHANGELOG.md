@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.3.0
+
+`/yourturn` now lists what came in since you last picked up **on this machine**, not just what this pull brought in.
+
+- The anchor is a one-line bookmark per repo in `~/.cache/relay-kit/` (respects `XDG_CACHE_HOME`),
+  written at the end of a successful run. It is per machine and never in git — a shared file would
+  just be overwritten by the other machine
+- Commits in range are split using the reflog: ones made on this machine are counted, everything
+  else is listed in full. Deleted worktree branches lose their reflog, so their commits err toward
+  "from elsewhere" — too much, never too little
+- No bookmark yet (first run), or the bookmark was rewritten away by a rebase/reset → the report
+  says so and falls back to "what this pull brought in"
+- Not recorded when the sync fails or when the pull updated the relay setup itself, so a re-run
+  still sees the same commits
+- Dropped the "last 2 days" listing; the bookmark range replaces it
+- Why: another session had already pulled the other machine's 15 commits, so the next `/yourturn`
+  reported "0 new commits pulled" and the evening's work collapsed into nothing
+- The bookmark timestamp uses the machine's own clock and offset: `TZ=<zone>` fails silently on
+  systems without tzdata (Git Bash on Windows) and falls back to UTC
+- README and DESIGN now list this as the kit's third write, alongside `/handoff` and `/journal`
+
 ## 1.2.2
 
 Fixes a false positive in `/yourturn`: after a failed sync it could report commits the pull never brought in.

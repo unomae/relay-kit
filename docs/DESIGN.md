@@ -13,7 +13,9 @@ finished with, costs you an evening — and it happens on the run where you were
 attention, because you were leaving.
 
 So: the rituals earn trust by being safe to run without reading the output first. Where a fix is
-obvious they offer it and wait. The only unconditional write in the kit is `/handoff` creating a
+obvious they offer it and wait. (`/yourturn` also overwrites a one-line bookmark in
+`~/.cache/relay-kit/`, outside the repo — it holds a commit SHA and touches neither git nor your
+files.) The only unconditional write in the kit is `/handoff` creating a
 new file, which cannot destroy anything.
 
 **If you add a check, it reports. It does not fix.**

@@ -159,7 +159,8 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 - 絕不覆蓋你還沒 commit 的工作
 
 `/afk` 跟 `/yourturn` **只回報，你決定**。遇到明顯該修的，它會問你一句，等你點頭才動。整個 kit
-只有兩個地方會寫檔：`/handoff` 產出那份帖，還有 `/journal` 寫下你剛剛口述的日記。
+只有三個地方會寫檔：`/handoff` 產出那份帖、`/journal` 寫下你剛剛口述的日記，還有 `/yourturn`
+在 repo 外的 `~/.cache/relay-kit/` 覆寫一行書籤（記下這台上次接手到哪個 commit）。
 
 那如果檢查本身跑不動呢——平台上根本沒有那個指令、某個 repo 不回話？這種一律標成**未確認**，
 其他檢查照跑；一個檢查掛掉，不可以把整份巡檢一起拖下水。原則就一句：**壞掉的檢查，絕對不能
