@@ -23,8 +23,19 @@ configure). Entries resolve to `<vault_root>/<journal_dir>/YYYY-MM/YYYY-MM-DD.md
 
 ## In `/yourturn`
 
-- Find the most recent entry and read **only its frontmatter** — `tldr`, `todos`, `blockers`,
-  `next_hint`. That is the whole point of the frontmatter, and it keeps the read cheap.
+- Find the most recent **daily** entry — only files named `YYYY-MM-DD.md`. Other notes in the
+  same folder (a weekly review such as `week-36.md`, a monthly summary) sort *after* the dates and
+  usually have no frontmatter, so picking "the last file alphabetically" silently loses every
+  handoff field:
+
+  ```bash
+  JDIR="<vault_root>/<journal_dir>"
+  latest=$(find "$JDIR" -mindepth 2 -maxdepth 2 -type f \
+    -name '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9].md' | sort | tail -n 1)
+  ```
+
+- Read **only its frontmatter** — `tldr`, `todos`, `blockers`, `next_hint`. That is the whole
+  point of the frontmatter, and it keeps the read cheap.
 - No frontmatter (older entries) → fall back to scanning the body, and suggest adding frontmatter
   next time.
 - No entry at all → not an error. Say so and continue on git evidence alone.

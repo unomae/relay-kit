@@ -1,6 +1,6 @@
 ---
 name: afk
-version: 1.0.0
+version: 1.1.0
 description: |
   Read-only end-of-session sweep: what did I leave behind before walking away from this machine?
   Triggers on "afk", "logging off", "done for today", "packing up", "switching to my other machine".
@@ -117,15 +117,42 @@ Ports come from the **Services** table in the relay config. With no config, skip
 rather than guessing at ports.
 
 ```bash
-# macOS / Linux
-lsof -nP -iTCP -sTCP:LISTEN 2>/dev/null | grep -E ":(<ports>)"
-# Windows (Git Bash)
-netstat -ano | grep -E ":(<ports>) "
+ports='<port>|<port>'   # from the Services table, e.g. '5173|8000'
+scan_rc=0
+matches=
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*)
+    listeners=$(netstat -ano 2>&1) || scan_rc=$?
+    if [ "$scan_rc" -eq 0 ]; then
+      matches=$(printf '%s\n' "$listeners" | awk -v ports="$ports" '$1=="TCP" && $2 ~ (":(" ports ")$") && $4=="LISTENING"')
+    fi ;;
+  *)
+    listeners=$(lsof -nP -iTCP -sTCP:LISTEN 2>&1) || scan_rc=$?
+    # lsof exits 1 with no output when nothing is listening — that is a clean result, not an error
+    if [ "$scan_rc" -eq 1 ] && [ -z "$listeners" ]; then scan_rc=0; fi
+    if [ "$scan_rc" -eq 0 ]; then
+      matches=$(printf '%s\n' "$listeners" | awk -v ports="$ports" '$NF=="(LISTEN)" && $(NF-1) ~ (":(" ports ")$")')
+    fi ;;
+esac
+if [ "$scan_rc" -ne 0 ]; then
+  printf 'service scan unconfirmed (exit=%s)\n%s\n' "$scan_rc" "$listeners"
+elif [ -n "$matches" ]; then
+  printf '%s\n' "$matches"
+else
+  echo 'nothing listening on the configured ports'
+fi
 ```
 
-Anything still listening: name the port and its project, and note that the other machine will
-hit a port conflict or a locked database if it starts the same service. Nothing listening: one
-line saying so.
+Judge the printed result, not a raw exit code: `lsof` uses exit 1 for both "nothing found" and
+some errors, and a bare `grep` pipeline would turn a failed scan into "nothing listening". Match
+on the listening column and an exact port at the end of the address, so `:5173` does not also
+catch `:51730` or a remote port.
+
+- Something still listening: name the port and its project, and note that the other machine
+  will hit a port conflict or a locked database if it starts the same service.
+- Nothing listening: one line saying so.
+- **Scan unconfirmed**: report it as unverified with the exit code and the error text. Never
+  report it as "nothing listening".
 
 ### Step 5 — Projects missing from the config
 
@@ -174,7 +201,7 @@ is not one of them. If everything is clean, say so in one line instead of paddin
 
 **Services still up**
 - :5173 web — the other machine will collide on this port
-- (or "nothing listening")
+- (or "nothing listening", or "scan unconfirmed (exit=N)")
 
 **Drift on projects you touched**
 - `<project>` — first read: `<path>` | drift: none / possible / unverified

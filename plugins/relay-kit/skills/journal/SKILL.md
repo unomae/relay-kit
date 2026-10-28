@@ -1,6 +1,6 @@
 ---
 name: journal
-version: 1.0.0
+version: 1.0.1
 description: |
   Guided daily learning journal — seven questions, written to a dated Markdown file with
   frontmatter the relay rituals can read cheaply.
@@ -43,6 +43,11 @@ Create the month directory if it does not exist.
    starting:
 
    > Yesterday you wanted to: <items>. Worth checking off while we do this.
+
+   Keep "missing" and "failed" apart. No file for yesterday → skip quietly; a skipped day is
+   normal. A file that exists but cannot be read (permissions, a cloud-sync placeholder that is
+   not on disk yet) → say once that yesterday's entry could not be read, with the error, and
+   carry on. Never turn a failed read into "nothing carried over from yesterday".
 
 ### Step 1 — Ask, one question at a time
 

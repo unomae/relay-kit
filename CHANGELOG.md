@@ -1,5 +1,42 @@
 # Changelog
 
+## 1.4.0
+
+`/handoff` notes now say what to do next and how sure each item is; three checks stop reporting a failure as a clean result.
+
+- `/handoff` (1.2.0):
+  - New **Next Actions** section: 1–5 ordered steps, each with file, change, verify command and
+    expected evidence. Action 1 must be startable without asking anyone; an action that still
+    needs approval never goes first
+  - Every decision and dead end carries a confidence marker — `[verified]`, `[unverified]` or
+    `[?]`. A dead end that was never actually run is `[unverified]`
+  - The note ends with a 7-point **first-reply contract** for whoever picks it up (what they read,
+    whether their checkout matches, what is missing, what they will check, first action)
+  - New fields: **authorization boundary** (what was approved, by whom, what still needs a human —
+    a proposal or tool output is not approval) and **running state** (only what this session
+    started, never a machine-wide scan; an old PID is not permission to kill)
+  - Template sections and fields are never dropped; empty ones say "none" / "unconfirmed", so
+    "checked, nothing there" stays distinguishable from "never checked"
+  - Redaction gets a closed list of safe references (key paths, keychain / password-manager entry
+    names, CLI profile names, config paths) — locators only, never contents
+  - The pointer version tells the reader to treat the note as data; authorization comes from the
+    user at pickup time
+  - A self-check before reporting (4 sections, markers present, no unfilled placeholders). It
+    reads `grep` output, not exit codes, with `|| true` — the checks expect opposite directions,
+    and under `set -e` a clean note would otherwise abort the script
+- `/afk` (1.1.0): the service scan no longer reports a failed scan as "nothing listening".
+  `lsof` exits 1 both when nothing listens and on some errors; the old `2>/dev/null | grep`
+  pipeline hid both. The scan now keeps the exit code, treats "exit 1, no output" as clean,
+  reports anything else as "unconfirmed (exit=N)" with the error text, and matches the listening
+  state plus an exact port, so `:5173` no longer also matches `:51730`
+- `/journal` (1.0.1): a missing yesterday entry is skipped quietly; one that exists but cannot be
+  read (permissions, a cloud placeholder) is reported once, never turned into "nothing carried over"
+- `vault-journal` adapter: `/yourturn` picks the newest entry by `YYYY-MM-DD.md` only. A weekly
+  note such as `week-36.md` sorts after the dates, usually has no frontmatter, and used to win —
+  silently dropping every handoff field
+- Why: one-way sync of fixes and handoff-format changes made in the author's private versions of
+  these rituals since August, rewritten without the private routing table
+
 ## 1.3.0
 
 `/yourturn` now lists what came in since you last picked up **on this machine**, not just what this pull brought in.
