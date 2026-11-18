@@ -21,6 +21,9 @@ git config core.hooksPath
 
 Empty, or not the repo's hooks directory, means this machine is not running the shared hooks.
 
+Compare where the value points, not the string. A relative path (`.githooks`) and an absolute path
+to that same directory inside this clone are both correct; do not report an absolute one as unset.
+
 ## Fix
 
 ```bash

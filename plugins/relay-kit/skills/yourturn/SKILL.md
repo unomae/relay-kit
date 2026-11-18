@@ -1,6 +1,6 @@
 ---
 name: yourturn
-version: 1.3.0
+version: 1.3.1
 description: |
   Pick up work on a machine you have been away from: sync, then report what changed, where the
   work stands, and what still needs starting.
@@ -61,13 +61,17 @@ the workspace is still forbidden by the target rule above.
 git branch --show-current
 git status --short --branch
 RELAY_BEFORE=$(git rev-parse HEAD)          # anchor: before the pull
-git pull --ff-only; pull_rc=$?
+GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never git pull --ff-only; pull_rc=$?
 RELAY_AFTER=$(git rev-parse HEAD)           # anchor: after the pull
 git status --short --branch
 printf 'RELAY_BEFORE=%s\nRELAY_AFTER=%s\npull exit=%s\n' "$RELAY_BEFORE" "$RELAY_AFTER" "$pull_rc"
 ```
 
 Fall back to a plain `git pull` only if `--ff-only` is unavailable.
+
+The two variables on the pull line stop git and Git Credential Manager from opening a login prompt
+that nobody is there to answer. A pull that needs credentials then fails at once instead of hanging
+the ritual; report it as "sync needs a login on this machine" and stop, as for any other error.
 
 Steps 2.1 and 2.2 use those two anchors, never `ORIG_HEAD`. If the shell does not carry variables
 across calls, substitute the SHAs you actually measured — do not reach for `ORIG_HEAD` instead.

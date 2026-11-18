@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.4.1
+
+`/yourturn` no longer waits on a login prompt during the pull; the `hooks-path` adapter says an absolute path counts.
+
+- `/yourturn` (1.3.1): the pull runs with `GIT_TERMINAL_PROMPT=0 GCM_INTERACTIVE=never`, so a
+  remote that needs credentials fails at once and falls under the existing stop rule, reported as
+  "sync needs a login on this machine", instead of opening a prompt nobody is there to answer
+- `hooks-path` adapter: compare where `core.hooksPath` points, not the string. A relative path and
+  an absolute path to the same directory inside the clone are both correct
+- Why: both come from fixes in the author's private versions. There the pull stalled on Windows,
+  and a script that compared strings reported an absolute hooks path as unset
+- Verified: on macOS the new pull line exits 0 on a normal pull and exits 1 within a second
+  against a remote that needs credentials. Not verified: the stall could not be reproduced on
+  macOS (a shell without a terminal already fails fast there), the change has not been run on
+  Windows, and the adapter sentence is a wording change that was not exercised in a session
+
 ## 1.4.0
 
 `/handoff` notes now say what to do next and how sure each item is; three checks stop reporting a failure as a clean result.
