@@ -119,6 +119,21 @@ curl -o .claude/relay.config.md https://raw.githubusercontent.com/unomae/relay-k
 **完全不設定也能跑**，只是這樣拿到的只有 git 那層的檢查，沒有專案層的判斷。設定檔的價值在於
 讓儀式講得出這種話：*「你重寫了 api 的 retry 邏輯，但它的計劃書從那之後就沒動過。」*
 
+### 更新
+
+裝好的 plugin 不會自己跟著新版前進。要更新，先刷新 marketplace，再更新 plugin：
+
+```bash
+claude plugin marketplace update relay-kit
+claude plugin update relay-kit@relay-kit
+```
+
+如果你是用 `--scope local` 裝的，兩條都要在那個 repo 的根目錄跑，第二條再加上 `--scope local`。
+local 安裝只屬於那一個 repo，在別的目錄跑會找不到它。
+
+更新完要開一個新 session。skill 是 session 啟動時載入的，你跑更新的那個 session 還是舊版。
+更新不會動到你的 `.claude/relay.config.md`。每版改了什麼見 [`CHANGELOG.md`](CHANGELOG.md)。
+
 ---
 
 ## 設定檔

@@ -128,6 +128,24 @@ The rituals work with no config at all. You get the git checks and nothing proje
 With the config, they can say *"the api's plan doc hasn't moved since you rewrote its retry
 logic"*.
 
+### Updating
+
+An installed plugin does not follow new releases on its own. To update, refresh the
+marketplace first, then update the plugin:
+
+```bash
+claude plugin marketplace update relay-kit
+claude plugin update relay-kit@relay-kit
+```
+
+If you installed with `--scope local`, run both commands from that repo's root and add
+`--scope local` to the second one. A local install belongs to that one repo, so the update
+cannot find it from another directory.
+
+Then open a fresh session. Skills load at session start, so the session you ran the update
+from keeps the old version. Your `.claude/relay.config.md` is not touched by updates.
+See [`CHANGELOG.md`](CHANGELOG.md) for what changed.
+
 ---
 
 ## Configuration
